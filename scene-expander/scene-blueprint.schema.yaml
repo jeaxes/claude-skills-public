@@ -1,0 +1,140 @@
+# Scene Blueprint Schema (v1)
+#
+# Maps the 12 labeled blocks emitted by `scene-expander` to the
+# adapter-contract JSON consumed by every adapter under
+# `scripts/ai-video/adapters/`. Validation lives in
+# `scripts/ai-video/lib/parse-blueprint.sh`.
+#
+# Source format: plain-text, one labeled block per line OR per
+# heading. Labels are case-insensitive; whitespace around `:` is
+# tolerated. Block order is the canonical order below — out-of-order
+# blocks are accepted but logged as a warning.
+#
+# The blueprint is the provider-agnostic intermediate representation:
+# no block may carry one provider's prompt grammar. Per-provider
+# encoding lives in the motion-choreographer skill; the anti-leak
+# test in tests/test_ai_video_blueprint_schema.py scans this schema
+# and the scene-expander skill for provider tokens.
+
+version: 1
+
+blocks:
+  STYLE:
+    required: true
+    target: prompt.style
+    description: "Film stock + decade (live-action) or film title + year (animated)."
+
+  SUBJECT:
+    required: true
+    target: prompt.subject
+    description: "Character read. Verbatim from character.json when locked."
+
+  ENVIRONMENT:
+    required: true
+    target: prompt.environment
+    description: "Location, time-of-day, weather, era; world reaction."
+
+  ACTION:
+    required: true
+    target: prompt.action
+    description: "Anticipation / action / reaction with beat counts."
+
+  CAMERA:
+    required: true
+    target: prompt.camera
+    description: "Position, height, distance, move intent (provider-agnostic vocabulary)."
+
+  LENS:
+    required: true
+    target: prompt.lens
+    description: "Focal length in mm + aperture intent (live-action). Animated runs may emit 'n/a' but the block must be present."
+
+  LIGHTING:
+    required: true
+    target: prompt.lighting
+    description: "Key / fill / back / practical with direction."
+
+  MOOD:
+    required: true
+    target: prompt.mood
+    description: "Single emotional read."
+
+  DIALOGUE:
+    required: false
+    target: audio.dialogue
+    description: "Optional. Marks audio.native requirement when present."
+    null_when_absent: true
+
+  AMBIENT SOUND:
+    required: false
+    target: audio.ambient
+    description: "Optional ambient layer list."
+    null_when_absent: true
+
+  DURATION:
+    required: true
+    target: duration
+    type: number
+    description: "Seconds. Integer or one decimal."
+
+  NEGATIVE:
+    required: true
+    target: negative
+    description: "Clichés to reject, load-bearing top-first."
+
+# Chain directives — NOT one of the 12 blocks.
+#
+# A block above describes the shot. A chain directive describes how this scene
+# JOINS ITS NEIGHBOUR, which is a property of the assembly, not of the prompt —
+# so it is listed separately and the blueprint stays a 12-block IR everywhere
+# else in the tree. `parse-blueprint.sh` accepts the label like any other and
+# emits the value at the top level; the chain itself is read by
+# `scripts/ai-video/lib/seam-plan.sh`, which this file's parser never sees.
+chain_directives:
+  CONTINUITY:
+    required: false
+    target: continuity
+    default: cut
+    values: [cut, handoff, connector]
+    description: >
+      How this scene joins the PREVIOUS one. `cut` is a hard cut and is the
+      value assumed when the label is absent, so every blueprint written before
+      this directive existed keeps its exact meaning. `handoff` means this
+      scene's ref_images[0] is the extracted last frame of the previous scene's
+      RENDERED clip rather than its own still, which forces the two clips to
+      render sequentially. `connector` is a handoff plus one extra bridging
+      clip, and needs a probed `end_frame: true` on both adjacent models.
+      An unknown value is a parse error naming the value — never a silent
+      downgrade to `cut`.
+
+# Adapter-contract JSON shape produced by parse-blueprint.sh
+output_shape: |
+  {
+    "prompt": {
+      "style": "...",
+      "subject": "...",
+      "environment": "...",
+      "action": "...",
+      "camera": "...",
+      "lens": "...",
+      "lighting": "...",
+      "mood": "..."
+    },
+    "audio": {
+      "dialogue": [...] | null,
+      "ambient": [...] | null,
+      "enable_native_audio": true | false
+    },
+    "duration": 5.0,
+    "negative": ["...", "..."],
+    "continuity": "cut" | "handoff" | "connector",
+    "requires": {
+      "audio_native": true | false
+    }
+  }
+
+# `enable_native_audio` derives from: DIALOGUE present OR AMBIENT SOUND present.
+# Orchestrator uses `requires.audio_native` to pick an adapter with
+# `audio: native` capability (Phase 4 Step 1). When no native adapter
+# is available the orchestrator routes audio.* to ffmpeg mux at
+# stitch time (Phase 4 Step 7) and clears `enable_native_audio`.

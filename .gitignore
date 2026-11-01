@@ -1,0 +1,19 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Tool-generated output that does not belong in the skills repo
+generated/
+native/
+node_modules/
+__pycache__/
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key

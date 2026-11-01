@@ -1,0 +1,17 @@
+name: Security regressions
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  regression-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Local dashboard trust boundary
+        run: python3 -m unittest discover -s offensive-osint/scripts/tests -p test_dashboard_boundary.py -v
+      - name: Presentation HTML escaping
+        run: python3 -m unittest discover -s design/scripts/tests -p test_cip_html_escaping.py -v
+      - name: Parse After Effects runner
+        run: find after-effects -type f -name '*.sh' -print0 | xargs -0 -n1 bash -n

@@ -1,0 +1,37 @@
+{
+  "manifest_version": 1,
+  "domain": "db-query-tuning",
+  "tier": "lookup-only",
+  "retriever": "bm25",
+  "default_domain": "tuning",
+  "domains": {
+    "tuning": {
+      "file": "query-tuning.csv",
+      "search_cols": [
+        "Symptom",
+        "Keywords",
+        "Root Cause",
+        "Strategy"
+      ],
+      "output_cols": [
+        "Symptom",
+        "Root Cause",
+        "Strategy",
+        "Code Good",
+        "Anti-Pattern",
+        "Verification",
+        "Severity",
+        "Type",
+        "Engine"
+      ],
+      "max_results": 3
+    }
+  },
+  "owner": "package-maintainer",
+  "refresh_cadence": "quarterly",
+  "upstream": {
+    "repo": "derived: PostgreSQL 18 + MySQL 9.7 reference docs (previously PostgreSQL 16 + MySQL 8)",
+    "sha": "PostgreSQL 18.x / MySQL 9.7 reference documentation (PostgreSQL 16.x and MySQL 8.4 also supported)",
+    "last_checked": "2026-10-10"
+  }
+}
