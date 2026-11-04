@@ -1,6 +1,6 @@
 # Skill Index
 
-Browse all 528 top-level skills currently present in this repository. Open a skill's `SKILL.md` for its purpose, prerequisites, and usage instructions. Invocation syntax depends on the assistant that loads it.
+Browse all 529 top-level skills currently present in this repository. Open a skill's `SKILL.md` for its purpose, prerequisites, and usage instructions. Invocation syntax depends on the assistant that loads it.
 
 ## Development and engineering
 
@@ -33,6 +33,7 @@ Browse all 528 top-level skills currently present in this repository. Open a ski
 
 - [after-effects](after-effects/SKILL.md)
 - [apple-design](apple-design/SKILL.md)
+- [ios27-design](ios27-design/SKILL.md)
 - [banner-design](banner-design/SKILL.md)
 - [brand](brand/SKILL.md)
 - [chengfeng-check-updates](chengfeng-check-updates/SKILL.md)

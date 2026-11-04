@@ -4,7 +4,7 @@ A collection of reusable skills for Claude and compatible coding assistants. Eac
 
 ## Contents
 
-The repository holds 528 top-level skills. Most of them come from third-party collections; a few were written for this repository, such as `n8n-workflows`.
+The repository holds 529 top-level skills. Most of them come from third-party collections; a few were written for this repository, such as `n8n-workflows`.
 
 | Source | Notes |
 |---|---|
