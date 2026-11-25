@@ -1,6 +1,6 @@
 # Skill Index
 
-Browse all 529 top-level skills currently present in this repository. Open a skill's `SKILL.md` for its purpose, prerequisites, and usage instructions. Invocation syntax depends on the assistant that loads it.
+Browse all 530 top-level skills currently present in this repository. Open a skill's `SKILL.md` for its purpose, prerequisites, and usage instructions. Invocation syntax depends on the assistant that loads it.
 
 ## Development and engineering
 
@@ -52,6 +52,7 @@ Browse all 529 top-level skills currently present in this repository. Open a ski
 - [swiftui-pro](swiftui-pro/SKILL.md)
 - [ui-styling](ui-styling/SKILL.md)
 - [ui-ux-pro-max](ui-ux-pro-max/SKILL.md)
+- [unslop](unslop/SKILL.md)
 - [video](video/SKILL.md)
 
 ## Marketing and growth

@@ -4,12 +4,13 @@ A collection of reusable skills for Claude and compatible coding assistants. Eac
 
 ## Contents
 
-The repository holds 529 top-level skills. Most of them come from third-party collections; a few were written for this repository, such as `n8n-workflows`.
+The repository holds 530 top-level skills. Most of them come from third-party collections; a few were written for this repository, such as `n8n-workflows`.
 
 | Source | Notes |
 |---|---|
 | Initial collection | About 230 skills covering development, design, marketing, security research and productivity |
 | event4u-app/agent-config | 297 skills from `dist/agent-src/skills`, imported under the MIT license. Skills that already existed here (`brand`, `churn-prevention`, `customer-research`, `humanizer`) kept their earlier versions |
+| [heydamir/unslop](https://github.com/heydamir/unslop) | `unslop` at commit a6f121e, CC BY 4.0 by Damir Sokolovsky. Removes AI-looking patterns from UI. Licence and credit kept in the skill directory |
 
 Imported skills are kept as published upstream. Licence files and notices that ship inside a skill directory stay with that skill.
 
